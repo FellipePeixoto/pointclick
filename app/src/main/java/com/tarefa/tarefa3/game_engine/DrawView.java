@@ -1,6 +1,7 @@
 package com.tarefa.tarefa3.game_engine;
 
 import android.content.Context;
+import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.tarefa.tarefa3.assets.MainScene;
@@ -9,9 +10,10 @@ public class DrawView extends SurfaceView implements Runnable {
 
     boolean isRunning;
     SceneBase currentScene;
+    SurfaceHolder surfaceHolder;
     Thread thread;
 
-    public DrawView(Context context) {
+    public DrawView(Context context, int width, int height) {
         super(context);
 
         currentScene = new MainScene(context);
@@ -23,7 +25,7 @@ public class DrawView extends SurfaceView implements Runnable {
         while (isRunning){
 
             update();
-            render();
+            render(surfaceHolder);
 
             try {
                 Thread.sleep(100);
@@ -56,7 +58,7 @@ public class DrawView extends SurfaceView implements Runnable {
         currentScene.update();
     }
 
-    public void render(){
-        currentScene.render();
+    public void render(SurfaceHolder surfaceHolder){
+        currentScene.render(surfaceHolder);
     }
 }

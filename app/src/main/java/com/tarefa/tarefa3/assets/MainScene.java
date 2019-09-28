@@ -11,8 +11,12 @@ public class MainScene extends SceneBase {
     public MainScene(Context context) {
         super(context);
 
+        GameObject theBoy = new TheBoy(BitmapFactory.decodeResource(getResources(), R.drawable.theboy));
+        theBoy.x = 100;
+        theBoy.y = 100;
+
         this.gameObjects = new GameObject[]{
-                new TheBoy(BitmapFactory.decodeResource(getResources(), R.drawable.theboy))
+                theBoy
         };
     }
 }
