@@ -1,4 +1,4 @@
-package com.tarefa.tarefa3.scene;
+package com.tarefa.tarefa3.assets;
 
 import android.graphics.Bitmap;
 import android.graphics.Rect;
@@ -11,14 +11,12 @@ public class TheBoy extends GameObject {
     SpriteSheet spriteSheet;
 
     public TheBoy(Bitmap bitmap) {
-
         this.spriteSheet = new SpriteSheet(
                 bitmap,
                 new int[] {8, 8},
                 0,
                 new Rect(0,0,108,140)
         );
-
     }
 
     @Override
