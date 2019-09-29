@@ -85,7 +85,6 @@ public class DrawView extends SurfaceView implements Runnable, View.OnTouchListe
         switch (event.getAction()) {
 
             case MotionEvent.ACTION_UP:
-
                 for (GameObject gameObject: currentScene.getGameObjects()) {
 
                 }

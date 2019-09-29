@@ -35,16 +35,7 @@ public class Charac extends GameObject {
     @Override
     public void render(Canvas canvas) {
 
-        Rect tA = new Rect(spriteSheet.getSrc());
-        Rect tB = new Rect(spriteSheet.getDst());
-
-        canvas.drawBitmap(spriteSheet.getBitmap(),
-                tA,
-                tB,
-                null
-        );
-
-        spriteSheet.nextFrame();
+        spriteSheet.render(canvas, new Vector2(x,y));
 
         if (selected) {
             Paint paint = new Paint();

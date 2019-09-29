@@ -1,12 +1,14 @@
 package com.tarefa.tarefa3.components;
 
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.RectF;
+
+import com.tarefa.tarefa3.game_engine.Vector2;
 
 public class SpriteSheet {
 
-    public int posX;
-    public int posY;
     private int actualRow;
     private int actualFrame;
     private Bitmap bitmap;
@@ -14,8 +16,7 @@ public class SpriteSheet {
     private int[] frameCountByRow;
     private Rect rect;
 
-    public SpriteSheet(Bitmap bitmap, int[] frameCountByRow, Rect rect)
-    {
+    public SpriteSheet(Bitmap bitmap, int[] frameCountByRow, Rect rect) {
         this.bitmap = bitmap;
         this.frameCountByRow = frameCountByRow;
         rect.right = rect.right * 2;
@@ -25,7 +26,7 @@ public class SpriteSheet {
         this.actualFrame = 0;
     }
 
-    public SpriteSheet(Bitmap bitmap, int[] frameCountByRow, int defaultAnimation, Rect rect){
+    public SpriteSheet(Bitmap bitmap, int[] frameCountByRow, int defaultAnimation, Rect rect) {
         this.bitmap = bitmap;
         this.frameCountByRow = frameCountByRow;
         rect.right = rect.right * 2;
@@ -36,7 +37,17 @@ public class SpriteSheet {
         this.actualFrame = 0;
     }
 
-    public void SetAnimation(int value){
+    public void render(Canvas canvas, Vector2 position) {
+        canvas.drawBitmap(bitmap,
+                getSrc(),
+                new RectF(position.x, position.y, position.x + rect.right, position.y + rect.bottom),
+                null
+        );
+
+        nextFrame();
+    }
+
+    public void SetAnimation(int value) {
         if (value < 0 || value > frameCountByRow.length)
             return;
 
@@ -49,34 +60,25 @@ public class SpriteSheet {
         return bitmap;
     }
 
-    public int nextFrame(){
-        if (actualFrame >= frameCountByRow[actualRow] - 1)
-        {
+    public int nextFrame() {
+        if (actualFrame >= frameCountByRow[actualRow] - 1) {
             actualFrame = 0;
             return actualFrame;
         }
 
         actualFrame++;
-        return  actualFrame;
+        return actualFrame;
     }
 
     public Rect getSrc() {
         return new Rect(
                 rect.right * actualFrame,
                 actualRow * rect.bottom,
-                rect.right * actualFrame  + (rect.right),
+                rect.right * actualFrame + (rect.right),
                 actualRow * rect.bottom + (rect.bottom));
     }
 
-    public Rect getDst(){
-        return new Rect(
-                posX,
-                posY,
-                posX + rect.right,
-                posY + rect.bottom);
-    }
-
-    public Rect getRect(){
+    public Rect getRect() {
         return rect;
     }
 }

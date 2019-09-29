@@ -39,4 +39,5 @@ public class MainScene extends SceneBase {
         canvas.drawColor(Color.WHITE);
         renderObjects(canvas);
     }
+
 }
