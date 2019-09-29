@@ -27,9 +27,17 @@ public class Vector2 {
         y = y / total;
     }
 
-    public static Vector2 lerp(Vector2 point1, Vector2 point2, float dst) {
-        Vector2 point = new Vector2((point1.x + point2.x) * dst, (point1.y + point2.y) * dst);
-        return new Vector2(point.x + point1.x, point.y + point1.y);
+    public static float distance(Vector2 vectorA, Vector2 vectorB) {
+        return ( (vectorA.y - vectorA.x) * (vectorB.y - vectorB.x) +
+                (vectorB.y - vectorB.x) * (vectorB.y - vectorB.x) ) * 0.5f;
+    }
+
+    public static Vector2 lerp(Vector2 origin, Vector2 destiny, float dst) {
+
+        float xLerp = origin.x + (destiny.x - origin.x) * dst;
+        float yLerp = origin.y + (destiny.y - origin.y) * ((xLerp - origin.x) / (destiny.x - origin.x));
+
+        return new Vector2(xLerp, yLerp);
     }
 
     public Vector2 Sub(Vector2 value) {

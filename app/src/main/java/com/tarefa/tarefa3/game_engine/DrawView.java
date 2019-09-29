@@ -64,6 +64,7 @@ public class DrawView extends SurfaceView implements Runnable, View.OnTouchListe
     }
 
     public void update() {
+
         currentScene.update();
     }
 

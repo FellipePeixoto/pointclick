@@ -24,9 +24,10 @@ public class MainScene extends SceneBase {
         GameObject go1 = new Charac(BitmapFactory.decodeResource(getResources(), R.drawable.theboy));
         go1.position= new Vector2(100,100);
 
-        this.gameObjects = new GameObject[]{
-                go1
-        };
+        GameObject go2 = new Charac(BitmapFactory.decodeResource(getResources(), R.drawable.theboy));
+        go1.position= new Vector2(150,520);
+
+        this.gameObjects = new GameObject[]{ go1, go2};
     }
 
     @Override

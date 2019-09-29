@@ -6,7 +6,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -17,11 +16,15 @@ import com.tarefa.tarefa3.game_engine.Vector2;
 
 public class Charac extends GameObject implements Touchable {
 
-    private SpriteSheet spriteSheet;
-
     public volatile boolean selected;
-    private float speed = 100;
+
     Vector2 destiny;
+
+    private SpriteSheet spriteSheet;
+    private float speed = 100;
+    private boolean moving;
+
+
 
     public Charac(Bitmap bitmap) {
         this.spriteSheet = new SpriteSheet(
@@ -32,29 +35,21 @@ public class Charac extends GameObject implements Touchable {
         );
 
         destiny = new Vector2(100, 100);
-
-        Vector2 a1 = new Vector2(1,1);
-        Vector2 a2 = new Vector2(2,1);
-        Vector2 a1a2 = Vector2.lerp(a1,a1,0.5f);
-
-        Log.i("TESTE", a1.toString());
-        Log.i("TESTE", a2.toString());
-        Log.i("TESTE", a1a2.toString());
-        Log.i("TESTE","");
-
-        a1 = new Vector2(1,1);
-        a2 = new Vector2(2,2);
-        a1a2 = Vector2.lerp(a1,a1,0.5f);
-
-        Log.i("TESTE", a1.toString());
-        Log.i("TESTE", a2.toString());
-        Log.i("TESTE", a1a2.toString());
-        Log.i("TESTE","");
     }
 
     @Override
     public void update() {
 
+        if (!moving)
+            return;
+
+        double dst = Vector2.distance(position, destiny);
+
+        if (dst < 2)
+            moving = false;
+
+        else
+            position = Vector2.lerp(position, destiny, 0.5f);
     }
 
     @Override
@@ -87,25 +82,28 @@ public class Charac extends GameObject implements Touchable {
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
 
-                boolean flagContains = false;
+                if (moving)
+                    return;
 
                 if (new RectF(position.x,
                         position.y,
                         position.x + spriteSheet.getRect().right,
                         position.y + spriteSheet.getRect().bottom).contains(event.getX(), event.getY())) {
 
-                    flagContains = true;
-                }
+                    if (selected){
+                        MainScene.selected = null;
+                        selected = false;
+                    } else {
+                        MainScene.selected = this;
+                        selected = true;
+                    }
 
-                if (selected && flagContains) {
-                    selected = false;
-                    MainScene.selected = null;
                     return;
                 }
-                else if (MainScene.selected == null && flagContains){
-                    MainScene.selected = this;
-                    selected = true;
+
+                if (MainScene.selected == this){
                     destiny = new Vector2(event.getX(), event.getY());
+                    moving = true;
                 }
 
                 break;
