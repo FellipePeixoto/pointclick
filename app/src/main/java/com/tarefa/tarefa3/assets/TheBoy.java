@@ -29,17 +29,7 @@ public class TheBoy extends GameObject {
     }
 
     @Override
-    public void render(SurfaceHolder surfaceHolder) {
-
-        if (!surfaceHolder.getSurface().isValid())
-            return;
-
-        Canvas canvas = surfaceHolder.lockCanvas();
-
-        if (spriteSheet == null) {
-            surfaceHolder.unlockCanvasAndPost(canvas);
-            return;
-        }
+    public void render(Canvas canvas) {
 
         Rect tA = new Rect(spriteSheet.getSrc());
         Rect tB = new Rect(spriteSheet.getDst());
@@ -51,8 +41,6 @@ public class TheBoy extends GameObject {
         );
 
         spriteSheet.nextFrame();
-
-        surfaceHolder.unlockCanvasAndPost(canvas);
     }
 
     void Lerp(Vector2 destiny) {

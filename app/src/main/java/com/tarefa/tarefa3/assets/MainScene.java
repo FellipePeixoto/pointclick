@@ -2,6 +2,8 @@ package com.tarefa.tarefa3.assets;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
 
 import com.tarefa.tarefa3.R;
 import com.tarefa.tarefa3.game_engine.GameObject;
@@ -18,5 +20,16 @@ public class MainScene extends SceneBase {
         this.gameObjects = new GameObject[]{
                 theBoy
         };
+    }
+
+    @Override
+    public void update() {
+        updateObjects();
+    }
+
+    @Override
+    public void render(Canvas canvas) {
+        canvas.drawColor(Color.WHITE);
+        renderObjects(canvas);
     }
 }

@@ -1,7 +1,6 @@
 package com.tarefa.tarefa3.game_engine;
 
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
+import android.graphics.Canvas;
 
 public abstract class GameObject {
 
@@ -11,5 +10,5 @@ public abstract class GameObject {
 
     public abstract void update();
 
-    public abstract void render(SurfaceHolder surfaceHolder);
+    public abstract void render(Canvas canvas);
 }

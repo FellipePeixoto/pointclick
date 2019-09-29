@@ -1,6 +1,7 @@
 package com.tarefa.tarefa3.game_engine;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -17,6 +18,7 @@ public class DrawView extends SurfaceView implements Runnable {
         super(context);
 
         currentScene = new MainScene(context);
+        surfaceHolder = getHolder();
     }
 
     @Override
@@ -58,7 +60,15 @@ public class DrawView extends SurfaceView implements Runnable {
         currentScene.update();
     }
 
-    public void render(SurfaceHolder surfaceHolder){
-        currentScene.render(surfaceHolder);
+    public void render(SurfaceHolder surfaceHolder)
+    {
+        if (!surfaceHolder.getSurface().isValid())
+            return;
+
+        Canvas canvas = surfaceHolder.lockCanvas();
+
+        currentScene.render(canvas);
+
+        surfaceHolder.unlockCanvasAndPost(canvas);
     }
 }

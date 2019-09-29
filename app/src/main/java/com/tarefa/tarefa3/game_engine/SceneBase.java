@@ -14,25 +14,19 @@ public abstract class SceneBase extends SurfaceView {
         super(context);
     }
 
-    public void update(){
+    public abstract void update();
+
+    public abstract void render(Canvas canvas);
+
+    protected void updateObjects(){
         for (GameObject gameObject : gameObjects) {
             gameObject.update();
         }
     }
 
-    public void render(SurfaceHolder surfaceHolder){
-
-        if (!surfaceHolder.getSurface().isValid())
-            return;
-
-        Canvas canvas = surfaceHolder.lockCanvas();
-
-        canvas.drawColor(Color.WHITE);
-
-        surfaceHolder.unlockCanvasAndPost(canvas);
-
+    protected void renderObjects(Canvas canvas){
         for (GameObject gameObject : gameObjects) {
-            gameObject.render(surfaceHolder);
+            gameObject.render(canvas);
         }
     }
 }
