@@ -3,8 +3,9 @@ package com.tarefa.tarefa3.assets;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
-import android.view.SurfaceHolder;
+import android.graphics.RectF;
 
 import com.tarefa.tarefa3.components.SpriteSheet;
 import com.tarefa.tarefa3.game_engine.GameObject;
@@ -14,7 +15,8 @@ public class Charac extends GameObject {
 
     SpriteSheet spriteSheet;
 
-    float speed = 100;
+    public volatile boolean selected;
+    private float speed = 100;
 
     public Charac(Bitmap bitmap) {
         this.spriteSheet = new SpriteSheet(
@@ -43,6 +45,20 @@ public class Charac extends GameObject {
         );
 
         spriteSheet.nextFrame();
+
+        if (selected) {
+            Paint paint = new Paint();
+            paint.setColor(Color.RED);
+            paint.setStrokeWidth(5);
+            paint.setStyle(Paint.Style.STROKE);
+
+            canvas.drawRect(new RectF(
+                            x,
+                            y,
+                            x + spriteSheet.getRect().right,
+                            y + spriteSheet.getRect().bottom),
+                    paint);
+        }
     }
 
     void Lerp(Vector2 destiny) {
@@ -52,5 +68,4 @@ public class Charac extends GameObject {
         x += dir.x * speed;
         y += dir.y * speed;
     }
-
 }

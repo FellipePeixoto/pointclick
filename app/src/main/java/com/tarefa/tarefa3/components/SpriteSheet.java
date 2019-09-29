@@ -75,4 +75,8 @@ public class SpriteSheet {
                 posX + rect.right,
                 posY + rect.bottom);
     }
+
+    public Rect getRect(){
+        return rect;
+    }
 }

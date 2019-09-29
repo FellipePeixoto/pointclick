@@ -2,8 +2,6 @@ package com.tarefa.tarefa3.game_engine;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 public abstract class SceneBase extends SurfaceView {
@@ -18,15 +16,19 @@ public abstract class SceneBase extends SurfaceView {
 
     public abstract void render(Canvas canvas);
 
-    protected void updateObjects(){
+    protected void updateObjects() {
         for (GameObject gameObject : gameObjects) {
             gameObject.update();
         }
     }
 
-    protected void renderObjects(Canvas canvas){
+    protected void renderObjects(Canvas canvas) {
         for (GameObject gameObject : gameObjects) {
             gameObject.render(canvas);
         }
+    }
+
+    public GameObject[] getGameObjects(){
+        return this.gameObjects;
     }
 }

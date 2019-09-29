@@ -1,5 +1,7 @@
 package com.tarefa.tarefa3.game_engine;
 
+import android.graphics.RectF;
+
 public class Vector2 {
 
     public float x;
