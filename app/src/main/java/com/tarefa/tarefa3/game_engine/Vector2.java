@@ -1,12 +1,13 @@
 package com.tarefa.tarefa3.game_engine;
 
 public class Vector2 {
+
     public float x;
     public float y;
+
     public Vector2(float x, float y){
         this.x = x;
         this.y = y;
-
     }
 
     public void Normalize(){
@@ -20,6 +21,7 @@ public class Vector2 {
         x = x/total;
         y = y/total;
     }
+
     public Vector2 Sub(Vector2 value){
         return new Vector2(x - value.x,y-value.y);
     }

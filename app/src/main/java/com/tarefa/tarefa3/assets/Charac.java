@@ -10,11 +10,13 @@ import com.tarefa.tarefa3.components.SpriteSheet;
 import com.tarefa.tarefa3.game_engine.GameObject;
 import com.tarefa.tarefa3.game_engine.Vector2;
 
-public class TheBoy extends GameObject {
+public class Charac extends GameObject {
 
     SpriteSheet spriteSheet;
+
     float speed = 100;
-    public TheBoy(Bitmap bitmap) {
+
+    public Charac(Bitmap bitmap) {
         this.spriteSheet = new SpriteSheet(
                 bitmap,
                 new int[]{8, 8},
@@ -50,7 +52,5 @@ public class TheBoy extends GameObject {
         x += dir.x * speed;
         y += dir.y * speed;
     }
-
-
 
 }
