@@ -3,7 +3,6 @@ package com.tarefa.tarefa3.game_engine;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.RectF;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -11,6 +10,7 @@ import android.view.View;
 
 import com.tarefa.tarefa3.assets.Charac;
 import com.tarefa.tarefa3.assets.MainScene;
+import com.tarefa.tarefa3.components.SpriteSheet;
 
 public class DrawView extends SurfaceView implements Runnable, View.OnTouchListener {
 
@@ -31,21 +31,21 @@ public class DrawView extends SurfaceView implements Runnable, View.OnTouchListe
     @Override
     public void run() {
 
-        while (isRunning){
+        while (isRunning) {
 
             update();
             render(surfaceHolder);
 
             try {
                 Thread.sleep(100);
-            } catch (InterruptedException ie){
+            } catch (InterruptedException ie) {
 
             }
         }
 
     }
 
-    public void resume(){
+    public void resume() {
         isRunning = true;
 
         thread = new Thread(this);
@@ -53,22 +53,21 @@ public class DrawView extends SurfaceView implements Runnable, View.OnTouchListe
 
     }
 
-    public void stop(){
+    public void stop() {
         isRunning = false;
 
         try {
             thread.join();
-        } catch (InterruptedException ie){
+        } catch (InterruptedException ie) {
 
         }
     }
 
-    public void update(){
+    public void update() {
         currentScene.update();
     }
 
-    public void render(SurfaceHolder surfaceHolder)
-    {
+    public void render(SurfaceHolder surfaceHolder) {
         if (!surfaceHolder.getSurface().isValid())
             return;
 
@@ -82,21 +81,12 @@ public class DrawView extends SurfaceView implements Runnable, View.OnTouchListe
     @Override
     public boolean onTouch(View v, MotionEvent event) {
 
-        switch (event.getAction()) {
-
-            case MotionEvent.ACTION_UP:
-                for (GameObject gameObject: currentScene.getGameObjects()) {
-
-                }
-                return true;
-
-            case MotionEvent.ACTION_DOWN:
-                for (GameObject gameObject: currentScene.getGameObjects()) {
-
-                }
-                return  true;
+        for (GameObject g : currentScene.gameObjects) {
+            if (g instanceof Touchable){
+                ((Touchable) g).onTouchTrigger(v, event);
+            }
         }
 
-        return false;
+        return true;
     }
 }
