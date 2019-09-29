@@ -21,6 +21,7 @@ public class Charac extends GameObject implements Touchable {
 
     public volatile boolean selected;
     private float speed = 100;
+    Vector2 destiny;
 
     public Charac(Bitmap bitmap) {
         this.spriteSheet = new SpriteSheet(
@@ -29,6 +30,26 @@ public class Charac extends GameObject implements Touchable {
                 0,
                 new Rect(0, 0, 108, 140)
         );
+
+        destiny = new Vector2(100, 100);
+
+        Vector2 a1 = new Vector2(1,1);
+        Vector2 a2 = new Vector2(2,1);
+        Vector2 a1a2 = Vector2.lerp(a1,a1,0.5f);
+
+        Log.i("TESTE", a1.toString());
+        Log.i("TESTE", a2.toString());
+        Log.i("TESTE", a1a2.toString());
+        Log.i("TESTE","");
+
+        a1 = new Vector2(1,1);
+        a2 = new Vector2(2,2);
+        a1a2 = Vector2.lerp(a1,a1,0.5f);
+
+        Log.i("TESTE", a1.toString());
+        Log.i("TESTE", a2.toString());
+        Log.i("TESTE", a1a2.toString());
+        Log.i("TESTE","");
     }
 
     @Override
@@ -39,7 +60,7 @@ public class Charac extends GameObject implements Touchable {
     @Override
     public void render(Canvas canvas) {
 
-        spriteSheet.render(canvas, new Vector2(x, y));
+        spriteSheet.render(canvas, position);
 
         if (selected) {
             Paint paint = new Paint();
@@ -48,10 +69,10 @@ public class Charac extends GameObject implements Touchable {
             paint.setStyle(Paint.Style.STROKE);
 
             canvas.drawRect(new RectF(
-                            x,
-                            y,
-                            x + spriteSheet.getRect().right,
-                            y + spriteSheet.getRect().bottom),
+                            position.x,
+                            position.y,
+                            position.x + spriteSheet.getRect().right,
+                            position.y + spriteSheet.getRect().bottom),
                     paint);
         }
     }
@@ -60,26 +81,31 @@ public class Charac extends GameObject implements Touchable {
         return spriteSheet;
     }
 
-    void Lerp(Vector2 destiny) {
-        Vector2 pos = new Vector2(x, y);
-        Vector2 dir = destiny.Sub(pos);
-        dir.Normalize();
-        x += dir.x * speed;
-        y += dir.y * speed;
-    }
-
     @Override
     public void onTouchTrigger(View v, MotionEvent event) {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_UP:
 
-                if (new RectF(x,
-                        y,
-                        x + spriteSheet.getRect().right,
-                        y + spriteSheet.getRect().bottom).contains(event.getX(), event.getY())) {
+                boolean flagContains = false;
 
-                    /*Caso seja selecionado*/
+                if (new RectF(position.x,
+                        position.y,
+                        position.x + spriteSheet.getRect().right,
+                        position.y + spriteSheet.getRect().bottom).contains(event.getX(), event.getY())) {
+
+                    flagContains = true;
+                }
+
+                if (selected && flagContains) {
+                    selected = false;
+                    MainScene.selected = null;
+                    return;
+                }
+                else if (MainScene.selected == null && flagContains){
+                    MainScene.selected = this;
+                    selected = true;
+                    destiny = new Vector2(event.getX(), event.getY());
                 }
 
                 break;

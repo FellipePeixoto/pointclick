@@ -11,6 +11,7 @@ import android.view.View;
 import com.tarefa.tarefa3.R;
 import com.tarefa.tarefa3.game_engine.GameObject;
 import com.tarefa.tarefa3.game_engine.SceneBase;
+import com.tarefa.tarefa3.game_engine.Vector2;
 
 public class MainScene extends SceneBase {
 
@@ -20,12 +21,11 @@ public class MainScene extends SceneBase {
         super(context);
 
 
-        GameObject theBoy = new Charac(BitmapFactory.decodeResource(getResources(), R.drawable.theboy));
-        theBoy.x = 100;
-        theBoy.y = 100;
+        GameObject go1 = new Charac(BitmapFactory.decodeResource(getResources(), R.drawable.theboy));
+        go1.position= new Vector2(100,100);
 
         this.gameObjects = new GameObject[]{
-                theBoy
+                go1
         };
     }
 
