@@ -2,30 +2,32 @@ package com.tarefa.tarefa3.game_engine;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.graphics.RectF;
-import android.view.MotionEvent;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
 
 import com.tarefa.tarefa3.assets.Charac;
 import com.tarefa.tarefa3.assets.MainScene;
-import com.tarefa.tarefa3.components.SpriteSheet;
 
-public class DrawView extends SurfaceView implements Runnable, View.OnTouchListener {
+public class DrawView extends SurfaceView implements Runnable, SensorEventListener {
 
     boolean isRunning;
-    SceneBase currentScene;
+    static SceneBase currentScene;
     SurfaceHolder surfaceHolder;
     Thread thread;
+    public static Vector2 screenSize;
+
+    int x,y;
 
     public DrawView(Context context, int width, int height) {
         super(context);
-        setOnTouchListener(this);
-
+        screenSize = new Vector2();
+        screenSize.x = width;
+        screenSize.y = height;
         currentScene = new MainScene(context);
         surfaceHolder = getHolder();
-
     }
 
     @Override
@@ -50,7 +52,6 @@ public class DrawView extends SurfaceView implements Runnable, View.OnTouchListe
 
         thread = new Thread(this);
         thread.start();
-
     }
 
     public void stop() {
@@ -64,7 +65,7 @@ public class DrawView extends SurfaceView implements Runnable, View.OnTouchListe
     }
 
     public void update() {
-
+        ((Charac)currentScene.gameObjects[0]).move(x,y);
         currentScene.update();
     }
 
@@ -80,14 +81,18 @@ public class DrawView extends SurfaceView implements Runnable, View.OnTouchListe
     }
 
     @Override
-    public boolean onTouch(View v, MotionEvent event) {
-
-        for (GameObject g : currentScene.gameObjects) {
-            if (g instanceof Touchable){
-                ((Touchable) g).onTouchTrigger(v, event);
-            }
+    public void onSensorChanged(SensorEvent event) {
+        switch (event.sensor.getType()){
+            case Sensor.TYPE_ACCELEROMETER:
+                x = (int) event.values[0];
+                y = (int) event.values[1];
+                //Log.d("SENSORA",x + " -- " + y);
+                break;
         }
+    }
 
-        return true;
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 }

@@ -2,111 +2,68 @@ package com.tarefa.tarefa3.assets;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.view.MotionEvent;
-import android.view.View;
 
 import com.tarefa.tarefa3.components.SpriteSheet;
+import com.tarefa.tarefa3.game_engine.DrawView;
 import com.tarefa.tarefa3.game_engine.GameObject;
-import com.tarefa.tarefa3.game_engine.Touchable;
 import com.tarefa.tarefa3.game_engine.Vector2;
 
-public class Charac extends GameObject implements Touchable {
+public class Charac extends GameObject {
 
     public volatile boolean selected;
 
-    Vector2 destiny;
-
-    private SpriteSheet spriteSheet;
-    private float speed = 100;
+    public SpriteSheet spriteSheet;
+    private float speed = 4;
     private boolean moving;
-
-
 
     public Charac(Bitmap bitmap) {
         this.spriteSheet = new SpriteSheet(
                 bitmap,
                 new int[]{8, 8},
-                0,
+                1,
                 new Rect(0, 0, 108, 140)
         );
 
-        destiny = new Vector2(100, 100);
+        scale.x = spriteSheet.getRect().right;
+        scale.y = spriteSheet.getRect().bottom;
     }
 
     @Override
     public void update() {
-
-        if (!moving)
-            return;
-
-        double dst = Vector2.distance(position, destiny);
-
-        if (dst < 2)
-            moving = false;
-
-        else
-            position = Vector2.lerp(position, destiny, 0.5f);
+        rect.left = position.x + 50;
+        rect.top = position.y + 50;
+        rect.right = (position.x + scale.x) - 50;
+        rect.bottom = (position.y + scale.y) - 50;
     }
 
     @Override
     public void render(Canvas canvas) {
 
         spriteSheet.render(canvas, position);
+    }
 
-        if (selected) {
-            Paint paint = new Paint();
-            paint.setColor(Color.RED);
-            paint.setStrokeWidth(5);
-            paint.setStyle(Paint.Style.STROKE);
+    public void move(int x, int y){
 
-            canvas.drawRect(new RectF(
-                            position.x,
-                            position.y,
-                            position.x + spriteSheet.getRect().right,
-                            position.y + spriteSheet.getRect().bottom),
-                    paint);
+        float newX = position.x - x * speed;
+        float newY = position.y + y * speed;
+
+        if (newX > position.x){
+            spriteSheet.SetAnimation(0);
         }
+        else {
+            spriteSheet.SetAnimation(1);
+        }
+
+        if (newX >= 0 && newX + scale.x <= DrawView.screenSize.x)
+            position.x = newX;
+
+        if (newY >= 0 && newY + scale.y <= DrawView.screenSize.y)
+            position.y = newY;
     }
 
     public SpriteSheet getSpriteSheet() {
         return spriteSheet;
-    }
-
-    @Override
-    public void onTouchTrigger(View v, MotionEvent event) {
-
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_UP:
-
-                if (moving)
-                    return;
-
-                if (new RectF(position.x,
-                        position.y,
-                        position.x + spriteSheet.getRect().right,
-                        position.y + spriteSheet.getRect().bottom).contains(event.getX(), event.getY())) {
-
-                    if (selected){
-                        MainScene.selected = null;
-                        selected = false;
-                    } else {
-                        MainScene.selected = this;
-                        selected = true;
-                    }
-
-                    return;
-                }
-
-                if (MainScene.selected == this){
-                    destiny = new Vector2(event.getX(), event.getY());
-                    moving = true;
-                }
-
-                break;
-        }
     }
 }

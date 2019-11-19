@@ -53,7 +53,7 @@ public class SpriteSheet {
 
         this.actualRow = value;
         frameCount = frameCountByRow[this.actualRow];
-        this.actualFrame = 0;
+        //this.actualFrame = 0;
     }
 
     public Bitmap getBitmap() {
